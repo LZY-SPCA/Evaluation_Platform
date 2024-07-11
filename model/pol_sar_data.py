@@ -1,5 +1,5 @@
 import numpy as np
-from constants.constant import FULL_POLARIZATION, DUAL_POLARIZATION
+from constants.polarization_constant import FULL_POLARIZATION, DUAL_POLARIZATION
 
 
 class PolSARData:
@@ -9,26 +9,26 @@ class PolSARData:
         self.width = width
         self.polar_type = polar_type
         self.dual_type = dual_type
-        self.S_matrix = None
-        self.T_matrix = None
+        self.__S_matrix = None
+        self.__T_matrix = None
         self.S_matrix_exist = False
         self.T_matrix_exist = False
 
     def set_S_matrix(self, S_matrix: np.array):
         if S_matrix is not None and self.S_matrix_valid(S_matrix):
-            self.S_matrix = S_matrix
+            self.__S_matrix = S_matrix
             self.S_matrix_exist = True
 
     def get_S_matrix(self) -> np.array:
-        return self.S_matrix
+        return self.__S_matrix
 
     def set_T_matrix(self, T_matrix: np.array):
         if T_matrix is not None and self.T_matrix_valid(T_matrix):
-            self.T_matrix = T_matrix
+            self.__T_matrix = T_matrix
             self.T_matrix_exist = True
 
     def get_T_matrix(self) -> np.array:
-        return self.T_matrix
+        return self.__T_matrix
 
     def T_matrix_valid(self, T_matrix: np.array) -> bool:
         shape = T_matrix.shape

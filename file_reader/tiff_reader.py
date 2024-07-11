@@ -1,8 +1,8 @@
 from osgeo import gdal
 import numpy as np
-from pol_sar_data import PolSARData
-from constants.constant import (FULL_POLARIZATION, DUAL_POLARIZATION, FULL_POLARIZATION_CHANNELS,
-                                DUAL_POLARIZATION_CHANNELS, DUAL_POLARIZATION_TYPES)
+from model.pol_sar_data import PolSARData
+from constants.polarization_constant import (FULL_POLARIZATION, DUAL_POLARIZATION, FULL_POLARIZATION_CHANNELS,
+                                             DUAL_POLARIZATION_CHANNELS)
 
 
 gdal.UseExceptions()
@@ -20,7 +20,7 @@ def pre_process():
     return data.shape
 
 
-def read_full_as_SAR() -> PolSARData:
+def read_tiff_full_as_SAR(file_path, file_name) -> PolSARData:
     shape = pre_process()
     for polar in FULL_POLARIZATION_CHANNELS:
         dataset = gdal.Open(f'{C_path}/1144_010_C_{polar}_L1A.tiff', gdal.GA_ReadOnly)
@@ -34,7 +34,7 @@ def read_full_as_SAR() -> PolSARData:
     return sar_data
 
 
-def read_dual_as_SAR(dual_type: int) -> PolSARData:
+def read_tiff_dual_as_SAR(dual_type: str) -> PolSARData:
     shape = pre_process()
     for polar in DUAL_POLARIZATION_CHANNELS[dual_type]:
         dataset = gdal.Open(f'{C_path}/1144_010_C_{polar}_L1A.tiff', gdal.GA_ReadOnly)
@@ -43,11 +43,11 @@ def read_dual_as_SAR(dual_type: int) -> PolSARData:
     SAR_matrix = np.dstack((datasets[0], datasets[1]))
     SAR_matrix = SAR_matrix.transpose(1, 2, 0).reshape(shape[0], shape[1], 1, 2)
     sar_data = PolSARData('1144_010_C_HH_L1A', shape[0], shape[1],
-                          DUAL_POLARIZATION, DUAL_POLARIZATION_TYPES[dual_type])
+                          DUAL_POLARIZATION, dual_type)
     sar_data.set_S_matrix(SAR_matrix)
     print(sar_data.is_S_matrix_available())
     return sar_data
 
 
 if __name__ == '__main__':
-    read_dual_as_SAR()
+    read_tiff_dual_as_SAR('PP1')

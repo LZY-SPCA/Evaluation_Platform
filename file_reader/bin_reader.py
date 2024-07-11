@@ -1,13 +1,13 @@
-from pol_sar_data import PolSARData
+from model.pol_sar_data import PolSARData
 import numpy as np
-from constants.constant import (BIN_FULL_POLARIZATION_CHANNELS, FULL_POLARIZATION, DUAL_POLARIZATION,
-                                BIN_DUAL_POLARIZATION_CHANNELS)
+from constants.polarization_constant import (BIN_FULL_POLARIZATION_CHANNELS, FULL_POLARIZATION, DUAL_POLARIZATION,
+                                             BIN_DUAL_POLARIZATION_CHANNELS)
 
 bin_file_path = './bin/full/'
 datasets = []
 
 
-def read_full_as_SAR(row: int, col: int) -> PolSARData:
+def read_bin_full_as_SAR(row: int, col: int) -> PolSARData:
     shape = (row, col)
     for polar in BIN_FULL_POLARIZATION_CHANNELS:
         real_data = np.fromfile(f'{bin_file_path}/{polar}_real.bin', dtype=np.float32)
@@ -30,7 +30,7 @@ def read_full_as_SAR(row: int, col: int) -> PolSARData:
     return sar_data
 
 
-def read_dual_as_SAR(row: int, col: int, dual_type: int) -> PolSARData:
+def read_bin_dual_as_SAR(row: int, col: int, dual_type: str) -> PolSARData:
     shape = (row, col)
     for polar in BIN_DUAL_POLARIZATION_CHANNELS[dual_type]:
         real_data = np.fromfile(f'{bin_file_path}/{polar}_real.bin', dtype=np.float32)
@@ -47,10 +47,11 @@ def read_dual_as_SAR(row: int, col: int, dual_type: int) -> PolSARData:
     SAR_matrix = np.dstack((datasets[0], datasets[1], datasets[2], datasets[3]))
     SAR_matrix = SAR_matrix.transpose(1, 2, 0).reshape(shape[0], shape[1], 1, 2)
     print(SAR_matrix)
-    sar_data = PolSARData('1144_010_C_HH_L1A', shape[0], shape[1], DUAL_POLARIZATION, BIN_DUAL_POLARIZATION_CHANNELS[dual_type])
+    sar_data = PolSARData('1144_010_C_HH_L1A', shape[0], shape[1],
+                          DUAL_POLARIZATION, dual_type)
     sar_data.set_S_matrix(SAR_matrix)
     print(sar_data.is_S_matrix_available())
     return sar_data
 
 if __name__ == '__main__':
-    read_dual_as_SAR(5000, 5894, 0)
+    read_bin_dual_as_SAR(5000, 5894, 0)
