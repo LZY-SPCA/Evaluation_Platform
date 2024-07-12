@@ -1,3 +1,6 @@
+"""
+    Read .bin files and convert them into PolSARData.
+"""
 from model.pol_sar_data import PolSARData
 import numpy as np
 from constants.polarization_constant import (BIN_FULL_POLARIZATION_CHANNELS, FULL_POLARIZATION, DUAL_POLARIZATION,
@@ -8,6 +11,12 @@ datasets = []
 
 
 def read_bin_full_as_SAR(row: int, col: int) -> PolSARData:
+    """
+    Read .bin files with full_polarization channels
+    :param row: the row of the data matrix
+    :param col: the column of the data matrix
+    :return: PolSARData
+    """
     shape = (row, col)
     for polar in BIN_FULL_POLARIZATION_CHANNELS:
         real_data = np.fromfile(f'{bin_file_path}/{polar}_real.bin', dtype=np.float32)
@@ -31,6 +40,13 @@ def read_bin_full_as_SAR(row: int, col: int) -> PolSARData:
 
 
 def read_bin_dual_as_SAR(row: int, col: int, dual_type: str) -> PolSARData:
+    """
+    Read .bin files with dual_polarization channels
+    :param row: the row of the data matrix
+    :param col: the column of the data matrix
+    :param dual_type: the type of dual_polarization constant e.g. 'PP1'
+    :return: PolSARData
+    """
     shape = (row, col)
     for polar in BIN_DUAL_POLARIZATION_CHANNELS[dual_type]:
         real_data = np.fromfile(f'{bin_file_path}/{polar}_real.bin', dtype=np.float32)

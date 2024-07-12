@@ -1,9 +1,20 @@
+"""
+    A class for storing polarization data
+"""
 import numpy as np
 from constants.polarization_constant import FULL_POLARIZATION, DUAL_POLARIZATION
 
 
 class PolSARData:
     def __init__(self, proj_name, height, width, polar_type, dual_type=None):
+        """
+        Initialise the polarization data
+        :param proj_name: project name
+        :param height: height of the polarization data
+        :param width: width of the polarization data
+        :param polar_type: type of polarization constant e.g. 'full'
+        :param dual_type: type of dual_polarization constant e.g. 'PP1'
+        """
         self.proj_name = proj_name
         self.height = height
         self.width = width

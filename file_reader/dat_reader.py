@@ -1,3 +1,6 @@
+"""
+    Read .dat files and convert them into PolSARData.
+"""
 import os
 from osgeo import gdal
 import numpy as np
@@ -13,12 +16,13 @@ dat_file_path = f'{C_path}/1144_010_C_HH_L1A.dat'
 datasets = []
 
 
-def pre_process(file_path):
-    if not os.path.exists(file_path):
-        raise FileNotFoundError
-
-
 def read_dat_full_as_SAR(row: int, col: int) -> PolSARData:
+    """
+    Read .dat files with full_polarization channels
+    :param row: the row of the data matrix
+    :param col: the column of the data matrix
+    :return: PolSARData
+    """
     shape = (row, col)
     for polar in FULL_POLARIZATION_CHANNELS:
         dataset = np.fromfile(f'{C_path}/1144_010_C_{polar}_L1A.dat', dtype=np.float32)
@@ -41,6 +45,13 @@ def read_dat_full_as_SAR(row: int, col: int) -> PolSARData:
 
 
 def read_dat_dual_as_SAR(row: int, col: int, dual_type: str) -> PolSARData:
+    """
+    Read .dat files with dual_polarization channels
+    :param row: the row of the data matrix
+    :param col: the column of the data matrix
+    :param dual_type: the type of dual_polarization constant e.g. 'PP1'
+    :return: PolSARData
+    """
     shape = (row, col)
     for polar in DUAL_POLARIZATION_CHANNELS[dual_type]:
         dataset = np.fromfile(f'{C_path}/1144_010_C_{polar}_L1A.dat', dtype=np.float32)

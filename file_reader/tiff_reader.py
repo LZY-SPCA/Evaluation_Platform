@@ -15,12 +15,22 @@ datasets = []
 
 
 def pre_process():
+    """
+    Get the shape of data matrix
+    :return: Shape
+    """
     dataset = gdal.Open(f'{C_path}/1144_010_C_HH_L1A.tiff', gdal.GA_ReadOnly)
     data = dataset.GetRasterBand(1).ReadAsArray()
     return data.shape
 
 
 def read_tiff_full_as_SAR(file_path, file_name) -> PolSARData:
+    """
+    Read .tiff files with full_polarization channels
+    :param file_path:
+    :param file_name:
+    :return: PolSARData
+    """
     shape = pre_process()
     for polar in FULL_POLARIZATION_CHANNELS:
         dataset = gdal.Open(f'{C_path}/1144_010_C_{polar}_L1A.tiff', gdal.GA_ReadOnly)
@@ -35,6 +45,11 @@ def read_tiff_full_as_SAR(file_path, file_name) -> PolSARData:
 
 
 def read_tiff_dual_as_SAR(dual_type: str) -> PolSARData:
+    """
+    Read .tiff files with dual_polarization channels
+    :param dual_type: the type of dual_polarization constant e.g. 'PP1'
+    :return: PolSARData
+    """
     shape = pre_process()
     for polar in DUAL_POLARIZATION_CHANNELS[dual_type]:
         dataset = gdal.Open(f'{C_path}/1144_010_C_{polar}_L1A.tiff', gdal.GA_ReadOnly)

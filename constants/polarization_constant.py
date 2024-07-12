@@ -1,3 +1,7 @@
+"""
+    Constants related to the polarization.
+"""
+
 FULL_POLARIZATION = 'full'
 DUAL_POLARIZATION = 'dual'
 
