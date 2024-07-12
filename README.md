@@ -1,2 +1,5 @@
-Frontend of Evaluation_Platform
-GUI based on napari project
+# Frontend of Evaluation_Platform
+- A platform designed to manage SAR data, conduct decomposition in a workflow and visualize data
+- GUI is based on napari project
+- Decomposition API supported by PolSARpro 
+- tiff file read supported by GDAL
