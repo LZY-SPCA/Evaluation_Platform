@@ -10,6 +10,8 @@ DECOMPOSITION_TYPES = ['Yamaguchi4_Y4O']
 PROCESSING = 'running'
 FINISHED = 'finished'
 
+DECOMPOSITION_DICT = {'Yamaguchi4_Y4O': 'yamaguchi_4components_decomposition'}
+
 '''
     Constants related to different decomposition processes.
     Including channels,channel_suffix,visible_suffix
@@ -30,10 +32,18 @@ def get_details(decomposition_type) -> DecompositionOutput:
         print(type_dict)
         channel_name = type_dict['channels']
         channel_suffix = type_dict['channel_suffix']
-        visible_suffix = type_dict['visible_suffix']
+        if 'visible_suffix' in type_dict.keys():
+            visible_suffix = type_dict['visible_suffix']
+        else:
+            visible_suffix = None
+        if 'mask_suffix' in type_dict.keys():
+            mask_suffix = type_dict['mask_suffix']
+        else:
+            mask_suffix = None
         output = DecompositionOutput(channel_name,
                                      channel_suffix,
-                                     visible_suffix)
+                                     visible_suffix,
+                                     mask_suffix)
         return output
 
 
