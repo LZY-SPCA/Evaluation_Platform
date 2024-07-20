@@ -1,6 +1,7 @@
 import os
 
-from constants.decomposition_constants import DECOMPOSITION_TYPES, get_details, PROCESSING, FINISHED
+from constants.decomposition_constant import DECOMPOSITION_TYPES, PROCESSING, FINISHED
+from util.process_constant import get_decomposition_details
 
 
 class DecompositionBase:
@@ -18,7 +19,7 @@ class DecompositionBase:
     def join_file_name(self):
         decomposition_name = self.decomposition_type
         file_path = os.path.join(self.output_dir, decomposition_name)
-        output_path = get_details(decomposition_name)
+        output_path = get_decomposition_details(decomposition_name)
         file = {}
         for channel, name in output_path.channel.items():
             channel_file = []
@@ -26,28 +27,25 @@ class DecompositionBase:
                 channel_file.append(decomposition_name + name + suffix)
             file[channel] = channel_file
 
-        if output_path.visible_suffix is not None:
+        if output_path.visible is not None:
             visible_file_suffix = []
-            for suffix in output_path.visible_suffix:
+            for suffix in output_path.visible:
                 visible_file_suffix.append(decomposition_name + suffix)
             file['visible'] = visible_file_suffix
 
-        if output_path.mask_suffix is not None:
+        if output_path.mask is not None:
             mask_file_suffix = []
-            for suffix in output_path.mask_suffix:
+            for suffix in output_path.mask:
                 mask_file_suffix.append(decomposition_name + suffix)
             file['mask'] = mask_file_suffix
         print(file)
         return file
 
-    def update_status(self, status):
-        if status is not None:
-            self.__status = status
+    def update_status(self):
+        if self.check_output_valid() is True:
+            self.__status = FINISHED
         else:
-            if self.check_output_valid() is True:
-                self.__status = FINISHED
-            else:
-                self.__status = PROCESSING
+            self.__status = PROCESSING
 
     def check_output_valid(self):
         file_list = self.join_file_name()

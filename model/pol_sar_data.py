@@ -22,8 +22,10 @@ class PolSARData:
         self.dual_type = dual_type
         self.__S_matrix = None
         self.__T_matrix = None
+        self.__C_matrix = None
         self.S_matrix_exist = False
         self.T_matrix_exist = False
+        self.C_matrix_exist = False
 
     def set_S_matrix(self, S_matrix: np.array):
         if S_matrix is not None and self.S_matrix_valid(S_matrix):
@@ -33,10 +35,24 @@ class PolSARData:
     def get_S_matrix(self) -> np.array:
         return self.__S_matrix
 
+    def set_C_matrix(self, C_matrix: np.array) -> np.array:
+        if C_matrix is not None and self.C_matrix_valid(C_matrix):
+            if self.is_T_matrix_available():
+                print("Already have T_matrix, unable to set C_matrix")
+            else:
+                self.__C_matrix = C_matrix
+                self.C_matrix_exist = True
+
+    def get_C_matrix(self) -> np.array:
+        return self.__C_matrix
+
     def set_T_matrix(self, T_matrix: np.array):
         if T_matrix is not None and self.T_matrix_valid(T_matrix):
-            self.__T_matrix = T_matrix
-            self.T_matrix_exist = True
+            if self.is_C_matrix_available():
+                print("Already have C_matrix, unable to set T_matrix")
+            else:
+                self.__T_matrix = T_matrix
+                self.T_matrix_exist = True
 
     def get_T_matrix(self) -> np.array:
         return self.__T_matrix
@@ -57,11 +73,23 @@ class PolSARData:
                 return True
         return False
 
+    def C_matrix_valid(self, C_matrix: np.array) -> bool:
+        shape = C_matrix.shape
+        if len(shape) == 4 and shape[0] == self.height and shape[1] == self.width:
+            if self.polar_type is FULL_POLARIZATION and shape[2] == 3 and shape[3] == 3:
+                return True
+            elif self.polar_type is DUAL_POLARIZATION and shape[2] == 2 and shape[3] == 2:
+                return True
+        return False
+
     def is_S_matrix_available(self):
         return self.S_matrix_exist
 
     def is_T_matrix_available(self):
         return self.T_matrix_exist
+
+    def is_C_matrix_available(self):
+        return self.C_matrix_exist
 
     def get_polar_type(self):
         return self.polar_type
