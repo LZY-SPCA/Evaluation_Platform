@@ -22,7 +22,7 @@ class WorkSteps:
         :param file_type: type of the file e.g. bin,dat,tiff,t_bin
         :param polar_type: type of polarization e.g. full,dual
         :param dir_path: path of the directory
-        :param dual_type: type of dual e.g. 'PP1' , not use when polar_type is full
+        :param dual_type: type of dual e.g. 'pp1' , not use when polar_type is full
         :param row: row of the data matrix , not use when file_type is tiff
         :param col: column of the data matrix , not use when file_type is tiff
         :return:
