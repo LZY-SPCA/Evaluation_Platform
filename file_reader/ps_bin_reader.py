@@ -72,7 +72,7 @@ def read_bin_dual_as_SAR(dir_path, real_dict, imag_dict,row: int, col: int, dual
 
 
 def read_T_bin_as_SAR(row: int, col: int, dir_path, polar_type):
-    if polar_type is FULL_POLARIZATION:
+    if polar_type == FULL_POLARIZATION:
         channel_num = 3
     else:
         channel_num = 2
@@ -97,7 +97,7 @@ def read_T_bin_as_SAR(row: int, col: int, dir_path, polar_type):
             if i > j:
                 matrix_set.append(np.zeros(shape))
     T_matrix = np.dstack(matrix_set)
-    if polar_type is FULL_POLARIZATION:
+    if polar_type == FULL_POLARIZATION:
         T_matrix = T_matrix.transpose(1, 2, 0).reshape(shape[0], shape[1], 3, 3)
     else:
         T_matrix = T_matrix.transpose(1, 2, 0).reshape(shape[0], shape[1], 2, 2)

@@ -14,29 +14,28 @@ class DecompositionBase:
     def decomposition_type_valid(self):
         if self.decomposition_type not in DECOMPOSITION_TYPES:
             self.decomposition_type = None
-            raise ValueError('Decomposition type must be one of {}'.format(DECOMPOSITION_TYPES))
+            raise ValueError(f'Decomposition type must be one of {DECOMPOSITION_TYPES}')
 
     def join_file_name(self):
         decomposition_name = self.decomposition_type
-        file_path = os.path.join(self.output_dir, decomposition_name)
         output_path = get_decomposition_details(decomposition_name)
         file = {}
         for channel, name in output_path.channel.items():
             channel_file = []
             for suffix in output_path.channel_suffix:
-                channel_file.append(decomposition_name + name + suffix)
+                channel_file.append(os.path.join(self.output_dir, decomposition_name + name + suffix))
             file[channel] = channel_file
 
         if output_path.visible is not None:
             visible_file_suffix = []
             for suffix in output_path.visible:
-                visible_file_suffix.append(decomposition_name + suffix)
+                visible_file_suffix.append(os.path.join(self.output_dir, decomposition_name + suffix))
             file['visible'] = visible_file_suffix
 
         if output_path.mask is not None:
             mask_file_suffix = []
             for suffix in output_path.mask:
-                mask_file_suffix.append(decomposition_name + suffix)
+                mask_file_suffix.append(os.path.join(self.output_dir, decomposition_name + suffix))
             file['mask'] = mask_file_suffix
         print(file)
         return file
@@ -48,16 +47,17 @@ class DecompositionBase:
             self.__status = PROCESSING
 
     def check_output_valid(self):
-        file_list = self.join_file_name()
-        for f_list in file_list:
+        file_dict = self.join_file_name()
+        for f_list in file_dict.values():
             if type(f_list) is dict:
-                for f_name in f_list.values():
-                    if not os.path.exists(self.output_dir + f_name):
-                        return False
+                for f_name in f_list:
+                    if not os.path.exists(f_name):
+                        f_list.remove(f_name)
             else:
                 for f_name in f_list:
-                    if not os.path.exists(self.output_dir + f_name):
-                        return False
+                    if not os.path.exists(f_name):
+                        f_list.remove(f_name)
+        return file_dict
 
     def get_status(self):
         return self.__status

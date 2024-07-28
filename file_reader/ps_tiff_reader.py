@@ -26,19 +26,23 @@ def pre_process(dir_path, file_dict):
         return data.shape
 
 
-def read_tiff_full_as_SAR(dir_path, file_dict):
+def read_tiff_full_as_SAR(dir_path, file_dict, row, col):
     """
     Read .tiff files with full_polarization channels
+    :param col:
+    :param row:
     :param dir_path:
     :param file_dict:
     :return: S_matrix
     """
-    shape = pre_process(dir_path, file_dict)
+    shape = (row, col)
     for polar in FULL_POLARIZATION_CHANNELS:
         file_name = file_dict[polar]
         file_path = os.path.join(dir_path, file_name)
         dataset = gdal.Open(file_path, gdal.GA_ReadOnly)
         data = dataset.GetRasterBand(1).ReadAsArray()
+        if data.shape != shape:
+            raise Exception('channel size error')
         dataset = None
         datasets.append(data)
     SAR_matrix = np.dstack((datasets[0], datasets[1], datasets[2], datasets[3]))
@@ -46,9 +50,11 @@ def read_tiff_full_as_SAR(dir_path, file_dict):
     return SAR_matrix
 
 
-def read_tiff_dual_as_SAR(dir_path, file_dict, dual_type: str):
+def read_tiff_dual_as_SAR(dir_path, file_dict, col, row, dual_type: str):
     """
     Read .tiff files with dual_polarization channels
+    :param row:
+    :param col:
     :param file_dict:
     :param dir_path:
     :param dual_type: the type of dual_polarization constant e.g. 'PP1'
@@ -60,6 +66,8 @@ def read_tiff_dual_as_SAR(dir_path, file_dict, dual_type: str):
         file_path = os.path.join(dir_path, file_name)
         dataset = gdal.Open(file_path, gdal.GA_ReadOnly)
         data = dataset.GetRasterBand(1).ReadAsArray()
+        if data.shape != shape:
+            raise Exception('channel size error')
         dataset = None
         datasets.append(data)
     SAR_matrix = np.dstack((datasets[0], datasets[1]))

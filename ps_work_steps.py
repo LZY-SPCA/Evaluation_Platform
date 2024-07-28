@@ -31,9 +31,9 @@ class WorkSteps:
         if file_type == TIFF_FILE:
             tiff_dict = find_tiff_files(dir_path, polar_type, dual_type)
             if polar_type == FULL_POLARIZATION:
-                matrix = read_tiff_full_as_SAR(dir_path, tiff_dict)
+                matrix = read_tiff_full_as_SAR(dir_path, tiff_dict, row, col)
             elif polar_type == DUAL_POLARIZATION:
-                matrix = read_tiff_dual_as_SAR(dir_path, tiff_dict, dual_type)
+                matrix = read_tiff_dual_as_SAR(dir_path, tiff_dict, row, col, dual_type)
             else:
                 raise ValueError('polar_type must be either "full" or "dual"')
         elif file_type == DAT_FILE:
@@ -54,7 +54,7 @@ class WorkSteps:
                 raise ValueError('polar_type must be either "full" or "dual"')
         elif file_type == T_BIN_FILE:
             matrix = read_T_bin_as_SAR(row, col, dir_path, polar_type)
-            self.input_data = PolSARData(self.proj_name, row, col, polar_type)
+            self.input_data = PolSARData(self.proj_name, matrix.shape[0], matrix.shape[1], polar_type)
             self.input_data.set_T_matrix(matrix)
             return
         else:
@@ -95,8 +95,8 @@ class WorkSteps:
         decomposition = DecompositionBase(decomposition_type, output_dir)
         # TODO: 根据DECOMPOSITION_FUNCTION_DICT调用API
         output_file = decomposition.join_file_name()
-        decomposition.update_status()
-        return output_file
+        #decomposition.update_status()
+        return decomposition.check_output_valid()
 
 
 if __name__ == '__main__':

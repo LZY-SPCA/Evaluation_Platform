@@ -59,9 +59,11 @@ class PolSARData:
 
     def T_matrix_valid(self, T_matrix: np.array) -> bool:
         shape = T_matrix.shape
-        if (len(shape) == 4 and shape[0] == self.height and shape[1] == self.width
-                and shape[2] == 3 and shape[3] == 3):
-            return True
+        if len(shape) == 4 and shape[0] == self.height and shape[1] == self.width:
+            if self.polar_type == FULL_POLARIZATION and shape[2] == 3 and shape[3] == 3:
+                return True
+            elif self.polar_type == DUAL_POLARIZATION and shape[2] == 2 and shape[3] == 2:
+                return True
         return False
 
     def S_matrix_valid(self, S_matrix: np.array) -> bool:
@@ -76,9 +78,9 @@ class PolSARData:
     def C_matrix_valid(self, C_matrix: np.array) -> bool:
         shape = C_matrix.shape
         if len(shape) == 4 and shape[0] == self.height and shape[1] == self.width:
-            if self.polar_type is FULL_POLARIZATION and shape[2] == 3 and shape[3] == 3:
+            if self.polar_type == FULL_POLARIZATION and shape[2] == 3 and shape[3] == 3:
                 return True
-            elif self.polar_type is DUAL_POLARIZATION and shape[2] == 2 and shape[3] == 2:
+            elif self.polar_type == DUAL_POLARIZATION and shape[2] == 2 and shape[3] == 2:
                 return True
         return False
 

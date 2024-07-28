@@ -39,7 +39,6 @@ def get_decomposition_details(input_type) -> DecompositionOutput:
 def get_generate_details(input_type) -> GenerationOutput:
     if input_type in GENERATE_TYPES:
         type_dict = GENERATE_OUTPUT
-        print(type_dict)
         if 'visible_name' in type_dict.keys():
             visible_name = type_dict['visible_name']
         else:

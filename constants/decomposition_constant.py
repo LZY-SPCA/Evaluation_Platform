@@ -2,7 +2,6 @@
     Constants related to the process process.
 """
 
-from util.process_constant import get_decomposition_details
 
 DECOMPOSITION_TYPES = ['Yamaguchi4_Y4O']
 
@@ -20,5 +19,3 @@ Yamaguchi4_Y4O_dict = {'channels': {'Pd': '_Dbl', 'Pc': '_Hlx', 'Ps': '_Odd', 'P
                        'channel_suffix': ['.bin', '.bin.hdr', '_dB.bmp', '_dB.bmp.hdr'],
                        'visible_suffix': ['_RGB.bmp', '_RGB.bmp.hdr']}
 
-if __name__ == '__main__':
-    get_decomposition_details('Yamaguchi4_Y4O')

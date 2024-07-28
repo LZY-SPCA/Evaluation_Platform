@@ -31,7 +31,7 @@ def read_dat_full_as_SAR(dir_path, file_dict, row: int, col: int):
         file_path = os.path.join(dir_path, file_name)
         dataset = np.fromfile(file_path, dtype=np.float32)
         if not dataset.size == 2 * row * col:
-            raise Exception('channels not same size')
+            raise Exception('channels size error')
         dataset = dataset.reshape((row, col, 2))
         real_part = dataset[:, :, 0]
         imag_part = dataset[:, :, 1]
@@ -59,7 +59,7 @@ def read_dat_dual_as_SAR(dir_path, file_dict, row: int, col: int, dual_type: str
         file_path = os.path.join(dir_path, file_name)
         dataset = np.fromfile(file_path, dtype=np.float32)
         if not dataset.size == 2 * row * col:
-            raise Exception('channels error size')
+            raise Exception('channels size error')
         dataset = dataset.reshape((row, col, 2))
         real_part = dataset[:, :, 0]
         imag_part = dataset[:, :, 1]
