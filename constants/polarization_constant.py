@@ -8,6 +8,7 @@ TIFF_FILE = 'tiff'
 DAT_FILE = 'dat'
 BIN_FILE = 'bin'
 T_BIN_FILE = 't_bin'
+S_BIN_FILE = 's_bin'
 
 FULL_POLARIZATION_CHANNELS = ['HH', 'HV', 'VH', 'VV']
 DUAL_POLARIZATION_CHANNELS = {'pp1': ['HH', 'HV'], 'pp2': ['VV', 'VH'], 'pp3': ['HH', 'VV']}
@@ -15,7 +16,8 @@ DUAL_POLARIZATION_CHANNELS = {'pp1': ['HH', 'HV'], 'pp2': ['VV', 'VH'], 'pp3': [
 BIN_FULL_POLARIZATION_CHANNELS = ['s11', 's12', 's21', 's22']
 BIN_DUAL_POLARIZATION_CHANNELS = {'pp1': ['s11', 's21'], 'pp2': ['s22', 's21'], 'pp3': ['s11', 's22']}
 
-GENERATE_TYPES = ['C_Generate', 'T_Generate']
+GENERATE_TYPES = ['C_Generate', 'T_Generate', 'S_GENERATE']
+S_GENERATE = 'S_Generate'
 C_GENERATE = 'C_Generate'
 T_GENERATE = 'T_Generate'
 

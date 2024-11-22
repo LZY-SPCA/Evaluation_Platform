@@ -7,6 +7,7 @@ from model.pol_sar_data import PolSARData
 import numpy as np
 from constants.polarization_constant import (BIN_FULL_POLARIZATION_CHANNELS, FULL_POLARIZATION, DUAL_POLARIZATION,
                                              BIN_DUAL_POLARIZATION_CHANNELS)
+from util.file_discover import config_reader
 
 bin_file_path = './bin/full/'
 datasets = []
@@ -76,6 +77,7 @@ def read_T_bin_as_SAR(row: int, col: int, dir_path, polar_type):
         channel_num = 3
     else:
         channel_num = 2
+    row, col, polar_type = config_reader(dir_path)
     shape = (row, col)
     matrix_set = []
     for i in range(1, channel_num + 1):
@@ -104,5 +106,25 @@ def read_T_bin_as_SAR(row: int, col: int, dir_path, polar_type):
     return T_matrix
 
 
+def read_S_bin_as_SAR(row: int, col: int, dir_path, polar_type):
+    row, col, polar_type = config_reader(dir_path)
+    shape = (row, col)
+    for polar in BIN_FULL_POLARIZATION_CHANNELS:
+        file_path = os.path.join(dir_path, f'{polar}.bin')
+        data = np.fromfile(file_path, dtype=np.float32)
+        if not (data.size == row * col * 2):
+            raise Exception('channels not same size')
+        data = data.reshape((row, col, 2))
+        real_part = data[:, :, 0]
+        imag_part = data[:, :, 1]
+        # 合成复数数据
+        dataset = real_part + 1j * imag_part
+        datasets.append(dataset)
+    SAR_matrix = np.dstack((datasets[0], datasets[1], datasets[2], datasets[3]))
+    SAR_matrix = SAR_matrix.transpose(1, 2, 0).reshape(shape[0], shape[1], 2, 2)
+    return SAR_matrix
+
 if __name__ == '__main__':
-    read_bin_dual_as_SAR(5000, 5894, 'PP1')
+    #read_bin_dual_as_SAR(5000, 5894, 'PP1')
+    read_T_bin_as_SAR(5000, 5894, 'F:\lab\Evaluation_Platform\全极化T3\T3', 'full')
+    print(read_S_bin_as_SAR(5000,5894,'F:\lab\Evaluation_Platform\全极化S2\S2','full'))

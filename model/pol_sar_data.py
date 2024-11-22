@@ -23,6 +23,10 @@ class PolSARData:
         self.__S_matrix = None
         self.__T_matrix = None
         self.__C_matrix = None
+        self.__process = []
+        self.__decomposition = []
+        self.__detection = []
+        self.__recognition = []
         self.S_matrix_exist = False
         self.T_matrix_exist = False
         self.C_matrix_exist = False
@@ -98,3 +102,67 @@ class PolSARData:
 
     def get_dual_type(self):
         return self.dual_type
+
+    def add_process(self, process_type):
+        if process_type in self.__process:
+            return False
+        else:
+            self.__process.append(process_type)
+            return True
+
+    def find_process(self, process_type):
+        if process_type in self.__process:
+            return True
+        else:
+            return False
+
+    def is_process_empty(self):
+        return len(self.__process) == 0
+
+    def add_decomposition(self, decomposition_type):
+        if decomposition_type in self.__decomposition:
+            return False
+        else:
+            self.__decomposition.append(decomposition_type)
+            return True
+
+    def find_decomposition(self, decomposition_type):
+        if decomposition_type in self.__decomposition:
+            return True
+        else:
+            return False
+
+    def is_decomposition_empty(self):
+        return len(self.__decomposition) == 0
+
+    def add_detection(self, detection_type):
+        if detection_type in self.__detection:
+            return False
+        else:
+            self.__detection.append(detection_type)
+            return True
+
+    def find_detection(self, detection_type):
+        if detection_type in self.__detection:
+            return True
+        else:
+            return False
+
+    def is_detection_empty(self):
+        return len(self.__detection) == 0
+
+    def add_recognition(self, recognition_type):
+        if recognition_type in self.__recognition:
+            return False
+        else:
+            self.__recognition.append(recognition_type)
+            return True
+
+    def find_recognition(self, recognition_type):
+        if recognition_type in self.__recognition:
+            return True
+        else:
+            return False
+
+    def is_recognition_empty(self):
+        return len(self.__recognition) == 0
