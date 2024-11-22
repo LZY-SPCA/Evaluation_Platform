@@ -21,17 +21,17 @@ def get_decomposition_details(input_type) -> DecompositionOutput:
             channel_suffix = type_dict['channel_suffix']
         else:
             channel_suffix = None
-        if 'visible_suffix' in type_dict.keys():
-            visible_suffix = type_dict['visible_suffix']
+        if 'visible' in type_dict.keys():
+            visible = type_dict['visible']
         else:
-            visible_suffix = None
+            visible = None
         if 'mask_suffix' in type_dict.keys():
             mask_suffix = type_dict['mask_suffix']
         else:
             mask_suffix = None
         output = DecompositionOutput(channel_name,
                                      channel_suffix,
-                                     visible_suffix,
+                                     visible,
                                      mask_suffix)
         return output
 

@@ -1,6 +1,6 @@
-./PolSARpro_bin
 ./pol_sar_output
 ./package
 ./file_reader/bin
 ./file_reader/dat
 ./file_reader/dat_tiff
+/PolSARpro_bin/
