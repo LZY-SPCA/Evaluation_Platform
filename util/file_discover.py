@@ -5,8 +5,8 @@ import re
 import numpy as np
 
 from constants.polarization_constant import *
+from constants.filter_constant import *
 from util.constant_process import get_generate_details
-from .file_name_reg import change_slash
 
 
 def find_tiff_files(dir_path, polar_type, dual_type=None):
@@ -70,6 +70,21 @@ def find_bin_files(dir_path, polar_type, dual_type=None):
     return real_file_dict, imag_file_dict
 
 
+def process_output_dir(process_type, input_dir, pol_format):
+    """
+    生成filter等process的新输出文件夹
+    :param process_type:
+    :param input_dir:
+    :param pol_format:
+    :return:
+    """
+    if process_type in FILTER_OUTPUT_DICT.keys():
+        output_suffix = FILTER_OUTPUT_DICT[process_type]
+        return os.path.join(os.path.dirname(input_dir)+output_suffix, pol_format)
+    else:
+        raise ValueError('Process type not supported')
+
+
 def config_reader(config_dir):
     """
     C矩阵和T矩阵的直接读入依赖PolSARpro生成的config.txt
@@ -118,6 +133,7 @@ def config_reader(config_dir):
         raise Exception('row or col not found')
     return row, col, polar_type
 
+
 def config_valid(config_path):
     config_name = os.path.join(config_path, 'config.txt')
     row_flag = False
@@ -142,3 +158,5 @@ if __name__ == '__main__':
     find_dat_files('F:\lab\Evaluation_Platform\\file_reader\dat\C', FULL_POLARIZATION)
     #match = re.search('[^a-zA-Z0-9](HH)[^a-zA-Z0-9]', '1144_010_C_HH_L1A.tiff')
     #print(match.group(1))
+    path = process_output_dir('an_yang', 'F:\lab\Evaluation_Platform\全极化T3\T3', 'T3')
+    print(path)

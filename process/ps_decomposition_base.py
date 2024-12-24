@@ -45,12 +45,6 @@ class DecompositionBase:
         print(file)
         return file
 
-    def update_status(self):
-        if self.check_output_valid() is True:
-            self.__status = FINISHED
-        else:
-            self.__status = PROCESSING
-
     def check_output_valid(self):
         """
         检查输出文件是否有效（是否生成输出文件）
@@ -63,12 +57,12 @@ class DecompositionBase:
                     if not os.path.exists(f_name):
                         f_list.remove(f_name)
             else:
-                for f_name in f_list:
+                for f_name in f_list[:]:
                     if not os.path.exists(f_name):
                         f_list.remove(f_name)
-        for key, value in file_dict.items():
-            if len(value) == 0:
-                file_dict.pop(key)
+        for key in list(file_dict.keys()):
+            if len(file_dict[key]) == 0:
+                del file_dict[key]
         return file_dict
 
     def get_status(self):
@@ -80,3 +74,6 @@ if __name__ == '__main__':
     yamaguchi4.join_file_name()
     h_a_alpha = DecompositionBase('H_A_ALPHA', './')
     h_a_alpha.join_file_name()
+    krogager = DecompositionBase('Krogager', './')
+    krogager.join_file_name()
+    krogager.check_output_valid()

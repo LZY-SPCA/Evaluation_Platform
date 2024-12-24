@@ -1,6 +1,6 @@
 from model.pol_sar_data import PolSARData
 from ps_work_steps import WorkSteps
-from constants.procedure_constant import *
+from constants.ps_constant import *
 
 
 def check_process_procedure(work_steps: WorkSteps):

@@ -117,9 +117,12 @@ class PolSARpro:
         subprocess.run(command)
 
     def an_yang_filter(self, input_output_format, num_looks, k_coefficient, patch_window_size_row, patch_window_size_col, searching_window_size_row, searching_window_size_col):
-        new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_PRE", self.pol_format))
-        if len(input_output_format) == 4:
-            new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_PRE", input_output_format[-2:]))
+        if len(input_output_format) != 4:
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_PRE", self.pol_format))
+            self.root_dir = new_dir
+        else:
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_PRE", input_output_format[-2:]))
+            self.root_dir = os.path.abspath(os.path.join(new_dir, os.path.pardir))
         if not os.path.exists(new_dir):
             os.makedirs(new_dir)
         program_path = os.path.join(self.soft_path, "speckle_filter", "an_yang_filter.exe")
@@ -151,16 +154,19 @@ class PolSARpro:
         self.create_bmp_file(self.mask_file, os.path.join(self.output_dir, "mask_valid_pixels.bmp"), "float", "real", "jet", 0, 0, 1, "black")
 
     def lee_refined_filter(self, input_output_format, num_looks, window_size):
-        new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_LEE", self.pol_format))
-        if len(input_output_format) == 4:
-            new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_LEE", input_output_format[-2:]))
+        if len(input_output_format) != 4:
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_LEE", self.pol_format))
+            self.root_dir = new_dir
+        else:
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_LEE", input_output_format[-2:]))
+            self.root_dir = os.path.abspath(os.path.join(new_dir, os.path.pardir))
         if not os.path.exists(new_dir):
             os.makedirs(new_dir)
         program_path = os.path.join(self.soft_path, "speckle_filter", "lee_refined_filter.exe")
         command = [
             program_path,
             "-id", self.input_dir,
-            "-od", self.output_dir,
+            "-od", new_dir,
             "-iodf", input_output_format,    # "S2C3", "S2C4", "S2T3", "S2T4", "C2", "C3", "C4", "T2", "T3", "T4", "SPP", "IPP"
             "-ofr", str(self.row_offset),
             "-ofc", str(self.col_offset),
@@ -260,9 +266,12 @@ class PolSARpro:
         self.create_rgb_file(os.path.join(self.output_dir, input_files[0]), os.path.join(self.output_dir, input_files[1]), os.path.join(self.output_dir, input_files[2]), os.path.join(self.output_dir, "Yamaguchi4_"+mode+"_RGB.bmp"), 1, 0, 0, 0, 0, 0, 0)
 
     def huynen_decomposition(self, input_output_format, window_size_row, window_size_col):
-        new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_JRH", self.pol_format))
-        if len(input_output_format) == 4:
-            new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_JRH", input_output_format[-2:]))
+        if len(input_output_format) != 4:
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_JRH", self.pol_format))
+            self.root_dir = new_dir
+        else:
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_JRH", input_output_format[-2:]))
+            self.root_dir = os.path.abspath(os.path.join(new_dir, os.path.pardir))
         if not os.path.exists(new_dir):
             os.makedirs(new_dir)
         program_path = os.path.join(self.soft_path, "data_process_sngl", "huynen_decomposition.exe")
@@ -316,9 +325,12 @@ class PolSARpro:
         self.create_rgb_file(os.path.join(self.output_dir, input_files[0]), os.path.join(self.output_dir, input_files[1]), os.path.join(self.output_dir, input_files[2]), os.path.join(self.output_dir, "Krogager_RGB.bmp"), 1, 0, 0, 0, 0, 0, 0)
 
     def cloude_decomposition(self, input_output_format, window_size_row, window_size_col):
-        new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_SRC", self.pol_format))
-        if len(input_output_format) == 4:
-            new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_SRC", input_output_format[-2:]))
+        if len(input_output_format) != 4:
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_SRC", self.pol_format))
+            self.root_dir = new_dir
+        else:
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_SRC", input_output_format[-2:]))
+            self.root_dir = os.path.abspath(os.path.join(new_dir, os.path.pardir))
         if not os.path.exists(new_dir):
             os.makedirs(new_dir)
         program_path = os.path.join(self.soft_path, "data_process_sngl", "cloude_decomposition.exe")
@@ -403,9 +415,13 @@ class PolSARpro:
 
     def orientation_compensation(self, window_size_row, window_size_col):
         if self.pol_format == "S2":
-            new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_POC"))
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_POC"))
+            self.root_dir = new_dir
         else:
-            new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_POC", self.pol_format))
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_POC", self.pol_format))
+            self.root_dir = os.path.abspath(os.path.join(new_dir, os.path.pardir))
+        if not os.path.exists(new_dir):
+            os.makedirs(new_dir)
         program_path = os.path.join(self.soft_path, "data_process_sngl", "orientation_estimation.exe")
         command = [
             program_path,
@@ -426,7 +442,7 @@ class PolSARpro:
             program_path,
             "-id", self.input_dir,
             "-od", new_dir,
-            "-if", os.path.join(self.input_dir, "orientation_estimation.bin"),
+            "-if", os.path.join(new_dir, "orientation_estimation.bin"),
             "-iodf", self.pol_format,
             "-ofr", str(self.row_offset),
             "-ofc", str(self.col_offset),
@@ -435,6 +451,7 @@ class PolSARpro:
             "-mask", self.mask_file
         ]
         subprocess.run(command)
+        shutil.copy(os.path.join(self.input_dir, "config.txt"), os.path.join(new_dir, "config.txt"))
         shutil.copy(os.path.join(self.input_dir, "mask_valid_pixels.bin"), os.path.join(new_dir, "mask_valid_pixels.bin"))
         self.input_dir = new_dir
         self.output_dir = new_dir
@@ -444,9 +461,13 @@ class PolSARpro:
 
     def basis_change(self, orientation_angle, ellipticity_angle):
         if self.pol_format == "S2":
-            new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_ELL"))
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_ELL"))
+            self.root_dir = new_dir
         else:
-            new_dir = os.path.abspath(os.path.join(self.input_dir, os.path.pardir, os.path.basename(self.root_dir) + "_ELL", self.pol_format))
+            new_dir = os.path.abspath(os.path.join(self.root_dir, os.path.pardir, os.path.basename(self.root_dir) + "_ELL", self.pol_format))
+            self.root_dir = os.path.abspath(os.path.join(new_dir, os.path.pardir))
+        if not os.path.exists(new_dir):
+            os.makedirs(new_dir)
         program_path = os.path.join(self.soft_path, "basis_change", "basis_change.exe")
         command = [
             program_path,
@@ -461,6 +482,7 @@ class PolSARpro:
             "-tau", str(ellipticity_angle),
         ]
         subprocess.run(command)
+        shutil.copy(os.path.join(self.input_dir, "config.txt"), os.path.join(new_dir, "config.txt"))
         self.input_dir = new_dir
         self.output_dir = new_dir
         self.create_mask_valid_pixels()
